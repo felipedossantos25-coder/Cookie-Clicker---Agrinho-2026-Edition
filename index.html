@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Clicker</title>
+
+<style>
+body{
+    margin:0;
+    background:#1e1e2f;
+    color:white;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    display:flex;
+    gap:40px;
+}
+
+.game{
+    text-align:center;
+}
+
+.cookie{
+    font-size:120px;
+    cursor:pointer;
+    transition:transform 0.1s;
+    user-select:none;
+}
+
+.cookie:active{
+    transform:scale(0.9);
+}
+
+.stats{
+    margin-top:20px;
+    font-size:24px;
+}
+
+.shop{
+    width:300px;
+    background:#2b2b40;
+    padding:20px;
+    border-radius:12px;
+}
+
+.shop h2{
+    text-align:center;
+}
+
+button{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ffb84d;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#ffa31a;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="game">
+        <div id="cookie" class="cookie">🍪</div>
+
+        <div class="stats">
+            <p>Cookies: <span id="cookies">0</span></p>
+            <p>Por clique: <span id="clickPower">1</span></p>
+            <p>Cookies/s: <span id="cps">0</span></p>
+        </div>
+    </div>
+
+    <div class="shop">
+        <h2>🛒 Loja</h2>
+
+        <button onclick="buyMultiplier()">
+            Multiplicador (+1 clique)<br>
+            Custo: <span id="multCost">50</span>
+        </button>
+
+        <button onclick="buyCursor()">
+            Cursor Automático (+1 CPS)<br>
+            Custo: <span id="cursorCost">100</span>
+        </button>
+
+        <button onclick="buyFactory()">
+            Fábrica (+10 CPS)<br>
+            Custo: <span id="factoryCost">1000</span>
+        </button>
+    </div>
+
+</div>
+
+<script>
+let cookies = 0;
+
+let clickPower = 1;
+let cps = 0;
+
+let multCost = 50;
+let cursorCost = 100;
+let factoryCost = 1000;
+
+const cookieEl = document.getElementById("cookie");
+
+cookieEl.addEventListener("click", () => {
+    cookies += clickPower;
+    updateUI();
+});
+
+function buyMultiplier(){
+    if(cookies >= multCost){
+        cookies -= multCost;
+
+        clickPower += 1;
+
+        multCost = Math.floor(multCost * 1.5);
+
+        updateUI();
+    }
+}
+
+function buyCursor(){
+    if(cookies >= cursorCost){
+        cookies -= cursorCost;
+
+        cps += 1;
+
+        cursorCost = Math.floor(cursorCost * 1.4);
+
+        updateUI();
+    }
+}
+
+function buyFactory(){
+    if(cookies >= factoryCost){
+        cookies -= factoryCost;
+
+        cps += 10;
+
+        factoryCost = Math.floor(factoryCost * 1.8);
+
+        updateUI();
+    }
+}
+
+function updateUI(){
+    document.getElementById("cookies").textContent =
+        Math.floor(cookies);
+
+    document.getElementById("clickPower").textContent =
+        clickPower;
+
+    document.getElementById("cps").textContent =
+        cps;
+
+    document.getElementById("multCost").textContent =
+        multCost;
+
+    document.getElementById("cursorCost").textContent =
+        cursorCost;
+
+    document.getElementById("factoryCost").textContent =
+        factoryCost;
+}
+
+setInterval(() => {
+    cookies += cps;
+    updateUI();
+}, 1000);
+
+updateUI();
+</script>
+
+</body>
+</html>
